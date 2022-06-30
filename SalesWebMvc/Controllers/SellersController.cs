@@ -43,16 +43,28 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentService.FindAll();
+                var viewModel = new SellerFormViewModel
+                {
+                    Seller = seller,
+                    Departments = departments
+                };
+
+                return View(viewModel);
+            }
+
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Delete(int? id)
         {
-            if (id is null) return RedirectToAction(nameof(Error), new { message = "Id não foi fornecido"});
+            if (id is null) return RedirectToAction(nameof(Error), new { message = "Id não foi fornecido" });
 
             var seller = _sellerService.FindById(id.Value);
-            if (seller is null) return RedirectToAction(nameof(Error), new { message = "Id não encontrado"});
+            if (seller is null) return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
 
             return View(seller);
         }
@@ -99,6 +111,18 @@ namespace SalesWebMvc.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    var departments = _departmentService.FindAll();
+                    var viewModel = new SellerFormViewModel
+                    {
+                        Seller = seller,
+                        Departments = departments
+                    };
+
+                    return View(viewModel);
+                }
+
                 if (id != seller.Id) return RedirectToAction(nameof(Error), new { message = "Id diferente." });
 
                 _sellerService.Update(seller);
