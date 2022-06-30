@@ -2,6 +2,7 @@
 using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
+using SalesWebMvc.Services.Exception;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,6 +72,46 @@ namespace SalesWebMvc.Controllers
             if (seller is null) return NotFound();
             
             return View(seller);
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id is null) return NotFound();
+
+            var seller = _sellerService.FindById(id.Value);
+            if (seller is null) return NotFound();
+
+            List<Department> departments = _departmentService.FindAll();
+
+            var viewModel = new SellerFormViewModel
+            {
+                Seller = seller,
+                Departments = departments
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Seller seller)
+        {
+            try
+            {
+                if (id != seller.Id) return BadRequest();
+
+                _sellerService.Update(seller);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (DbConcurrencyException)
+            {
+                return BadRequest();
+            }
         }
     }
 }
