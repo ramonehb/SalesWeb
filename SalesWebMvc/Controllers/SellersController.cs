@@ -5,8 +5,7 @@ using SalesWebMvc.Services;
 using SalesWebMvc.Services.Exception;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace SalesWebMvc.Controllers
 {
@@ -15,6 +14,8 @@ namespace SalesWebMvc.Controllers
         //Injecao de dependencia
         private readonly SellerService _sellerService;
         private readonly DepartmentService _departmentService;
+
+        public string Actvity { get; private set; }
 
         public SellersController(SellerService sellerService, DepartmentService departmentService)
         {
@@ -48,10 +49,10 @@ namespace SalesWebMvc.Controllers
 
         public IActionResult Delete(int? id)
         {
-            if (id is null) return NotFound();
+            if (id is null) return RedirectToAction(nameof(Error), new { message = "Id não foi fornecido"});
 
             var seller = _sellerService.FindById(id.Value);
-            if (seller is null) return NotFound();
+            if (seller is null) return RedirectToAction(nameof(Error), new { message = "Id não encontrado"});
 
             return View(seller);
         }
@@ -66,20 +67,20 @@ namespace SalesWebMvc.Controllers
 
         public IActionResult Details(int? id)
         {
-            if (id is null) return NotFound();
+            if (id is null) return RedirectToAction(nameof(Error), new { message = "Id não foi fornecido" });
 
             var seller = _sellerService.FindById(id.Value);
-            if (seller is null) return NotFound();
-            
+            if (seller is null) return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
+
             return View(seller);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id is null) return NotFound();
+            if (id is null) return RedirectToAction(nameof(Error), new { message = "Id não foi fornecido" });
 
             var seller = _sellerService.FindById(id.Value);
-            if (seller is null) return NotFound();
+            if (seller is null) return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
 
             List<Department> departments = _departmentService.FindAll();
 
@@ -98,20 +99,27 @@ namespace SalesWebMvc.Controllers
         {
             try
             {
-                if (id != seller.Id) return BadRequest();
+                if (id != seller.Id) return RedirectToAction(nameof(Error), new { message = "Id diferente." });
 
                 _sellerService.Update(seller);
 
                 return RedirectToAction(nameof(Index));
             }
-            catch (NotFoundException)
+            catch (ApplicationException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-            catch (DbConcurrencyException)
+        }
+
+        public IActionResult Error(string msg)
+        {
+            var viewModel = new ErrorViewModel()
             {
-                return BadRequest();
-            }
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                Message = msg
+            };
+
+            return View(viewModel);
         }
     }
 }
