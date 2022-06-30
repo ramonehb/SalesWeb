@@ -23,17 +23,17 @@ namespace SalesWebMvc.Data
                 return;
             }
 
-            Department d1 = new Department(1, "Computers");
-            Department d2 = new Department(2, "Electronics");
-            Department d3 = new Department(3, "Fashion");
-            Department d4 = new Department(4, "Books");
+            Department d1 = new Department(1, "Tecnologia da Informação");
+            Department d2 = new Department(2, "RH");
+            Department d3 = new Department(3, "Comercial");
+            Department d4 = new Department(4, "Operacional");
 
-            Seller s1 = new Seller(1, "Bob Brown", "bob@gmail.com", new DateTime(1998, 4, 21), 1000.0, d1);
-            Seller s2 = new Seller(2, "Maria Green", "maria@gmail.com", new DateTime(1979, 12, 31), 3500.0, d2);
-            Seller s3 = new Seller(3, "Alex Grey", "alex@gmail.com", new DateTime(1988, 1, 15), 2200.0, d1);
-            Seller s4 = new Seller(4, "Martha Red", "martha@gmail.com", new DateTime(1993, 11, 30), 3000.0, d4);
-            Seller s5 = new Seller(5, "Donald Blue", "donald@gmail.com", new DateTime(2000, 1, 9), 4000.0, d3);
-            Seller s6 = new Seller(6, "Alex Pink", "bob@gmail.com", new DateTime(1997, 3, 4), 3000.0, d2);
+            Seller s1 = new Seller(1, "Humberto Ramone", "humberto@gmail.com", new DateTime(1998, 4, 21), 2500.00, d1);
+            Seller s2 = new Seller(2, "Samuel Carvalho", "samuel@gmail.com", new DateTime(1979, 12, 31), 1850.0, d2);
+            Seller s3 = new Seller(3, "Lana Borges", "lana@gmail.com", new DateTime(1988, 1, 15), 10000.0, d1); ;
+            Seller s4 = new Seller(4, "Luiz Roseiro", "luiz@gmail.com", new DateTime(1993, 11, 30), 8000.0, d4);
+            Seller s5 = new Seller(5, "Elço Escarpini", "elco@gmail.com", new DateTime(2000, 1, 9), 10000.0, d3);
+            Seller s6 = new Seller(6, "Katia Reis", "katia@gmail.com", new DateTime(1997, 3, 4), 4000.0, d2);
 
             SalesRecord r1 = new SalesRecord(1, new DateTime(2018, 09, 25), 11000.0, SaleStatus.Billed, s1);
             SalesRecord r2 = new SalesRecord(2, new DateTime(2018, 09, 4), 7000.0, SaleStatus.Billed, s5);
