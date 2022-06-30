@@ -1,0 +1,46 @@
+﻿@model SalesWebMvc.Models.Seller;
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h5>Tem certeza que deseja apagar ?</h5>
+
+<div>
+    <h4>Funcionario</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Nome
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name);
+        </dd>
+        <dt>
+            E-mail
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email);
+        </dd>
+        <dt>
+            Data de nascimento
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BirthDate);
+        </dd>
+        <dt>
+            Salario
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BaseSalary);
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Confirmar" class="btn btn-danger" />
+        <a asp-action="Index">Voltar para lista</a>
+    </form>
+</div>
+
+
