@@ -10,10 +10,12 @@ namespace SalesWebMvc.Services
     public class SellerService
     {
         private readonly SalesWebMvcContext _context;
+        private readonly SalesRecordService _salesRecordService;
 
-        public SellerService(SalesWebMvcContext context)
+        public SellerService(SalesWebMvcContext context, SalesRecordService salesRecordService)
         {
             _context = context;
+            _salesRecordService = salesRecordService;
         }
 
         public async Task<List<Seller>> FindAllAsync()
@@ -29,6 +31,7 @@ namespace SalesWebMvc.Services
         public async Task RemoveAsync(int id)
         {
             var seller = _context.Seller.Find(id);
+            var sales = _salesRecordService.Remove(id);
             _context.Remove(seller);
             await _context.SaveChangesAsync();
         }
