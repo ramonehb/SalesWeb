@@ -31,7 +31,7 @@ namespace SalesWebMvc.Services
             }
         }
 
-        public async Task Remove(int id)
+        public async Task RemoveAll(int id)
         {
             var sales = await _context.SalesRecords.Where(s => s.Seller.Id == id).ToListAsync();
             _context.SalesRecords.RemoveRange(sales);
