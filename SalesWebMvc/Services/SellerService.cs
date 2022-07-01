@@ -31,7 +31,8 @@ namespace SalesWebMvc.Services
         public async Task RemoveAsync(int id)
         {
             var seller = _context.Seller.Find(id);
-            var sales = _salesRecordService.RemoveAll(id);
+            var taskSales = _salesRecordService.RemoveAll(id);
+            taskSales.Wait();
             _context.Remove(seller);
             await _context.SaveChangesAsync();
         }
